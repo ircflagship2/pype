@@ -2,7 +2,7 @@ from distutils.core import setup
 setup(
   name = 'pypecli',
   packages = ['pypecli'], # this must be the same as the name above
-  version = '1.0.0',
+  version = '1.0.1',
   description = 'Pype: Python for Command Line Oneliners',
   author = 'Jens Kristian Geyti',
   author_email = 'pype@jkg.dk',
