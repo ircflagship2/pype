@@ -23,6 +23,7 @@ Let's calculate the square of the even numbers between 1 and 5:
 $ seq 1 5 | pype 'n = int(_); if n%2==0 { print "{0}*{0}={1}".format(n, n*n) }'
 2*2=4
 4*4=16
+```
 
 Install
 -------
@@ -36,7 +37,9 @@ can just as well use `python pype.py 'my code`.
 
 **Install with pip**
 
-    pip install pype-cli
+```
+pip install pype-cli
+```
 
 **Manual Install**
 
@@ -84,6 +87,7 @@ useful if you need to include additional libraries:
 
 ```shell
 $ ls / | pype --before "import json" "print json.dumps( { 'stdin' : _, 'upper' : _.upper() } )"
+```
 
 Print the properly indented source code executed, together with verbose input
 and output information using the `--debug` flag. also useful to get an idea
