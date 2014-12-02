@@ -15,6 +15,7 @@ each line on `stdin` as the variable `_`, and lets you write a function to manip
 ```shell
 $ echo "hello world" | pype 'print _.upper()'
 HELLO WORLD
+```
 
 To make it easier to write one-liners, `pype` allows you to use curly brackets for indentation. 
 Let's calculate the square of the even numbers between 1 and 5:
@@ -136,7 +137,7 @@ Issues
 ------
 
 Issues and pull requests are gladly accepted. The biggest known problem is that the conversion
-between curly-braced and tabular-indented python is entirely untested, and likely to fail for
+between curly-bracketed and tabular-indented python is entirely untested, and likely to fail for
 anything more complex than very simple oneliners, like the ones in these examples.
 
 Contributors
