@@ -46,7 +46,7 @@ Examples:
 
 __author__ = "Jens Kristian Geyti"
 __license__ = "MIT"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 # besides the imports used by this script itself, these are
 # regularily used imports useful for the eval'ed user code.
