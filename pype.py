@@ -46,13 +46,13 @@ Examples:
 
 __author__ = "Jens Kristian Geyti"
 __license__ = "MIT"
-__version__ = "1.0.0-SNAPSHOT"
+__version__ = "1.0.0"
 
 # besides the imports used by this script itself, these are
 # regularily used imports useful for the eval'ed user code.
 # for instance, making exit(int) avilable, so end user won't
 # have to 'import sys; sys.exit(0)'.
-import datetime, os, pprint, re, sys, time
+import datetime, os, pprint, re, sys, time, math
 from sys import exit
 from optparse import OptionParser # use over argparse for python 2.6 support
 
@@ -108,7 +108,7 @@ class __pypecls__:
                  'processed)', 
             action='store_true', 
             default=False)
-        parser.add_option('--no-trimnewlines', 
+        parser.add_option('--no-trim', 
             dest='stripnewlines', 
             action='store_false', 
             default=True, 

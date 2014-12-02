@@ -1,64 +1,38 @@
 pype
 ====
 
-Bracket-indented Python for Command Line Oneliners:
+*Curly brackets indented python for command line oneliners:*
 
-    ./somecommand | pype 'if _.startswith('py') { print _ }' | ./anothercommand
+```shell
+ ./somecommand | pype "if _.startswith('py') { print _ }" | ./anothercommand
+```
 
 About
 -----
-`pype` makes it easy to use python in a typical unix command line pipe. The concept is
-easiest to grasp through an example. For the numbers 1 to 5, let's print the square
-root of the even numbers.
+`pype` makes it easy to use python in a typical unix command line pipe. `pype` exposes
+each line on `stdin` as the variable `_`, and lets you write a function to manipulate it:
 
-    $ seq 1 5 | pype 'import math; n = int(_); if n%2==0 { print math.sqrt(n) }'
-    1.41421356237
-	2.0
+```shell
+$ echo "hello world" | pype 'print _.upper()'
+HELLO WORLD
 
-- `pype` exposes every input line as the variable `_`.
-- You specify a python "function" through a command line argument (`pype 'print whatever(_)'`)
-- `pype` executes this function on every input line
-- `pype` functions are regular python, but can be indented using curly brackets because useful for command line onelines
+To make it easier to write one-liners, `pype` allows you to use curly brackets for indentation. 
+Let's calculate the square of the even numbers between 1 and 5:
 
-Examples
---------
-    # list all files/folders in root in uppercase
-    $ ls / | pype 'print _.upper()'
-
-    # don't use an alias
-    $ ls / | python ~/pype/pype.py 'print _.upper()'
-
-    # print files/folders containing the character 's' in uppercase, otherwise in:
-    $ ls / | pype "if 's' in _ { print _.upper() } else { print _.lower() }"
-
-    # do something cummulative using --before and --after. let's count all
-    # folders/files containing an s
-    $ ls / | pype --before "l = []" --after 'print len(l)' \
-        "if 's' in _: l.append(_)"
-
-    # print the properly indented source code executed, together verbose input
-    # and output information using the debug flag. also useful to get an idea
-    # of how pype works
-    $ ls / | pype --before "l = []" --after 'print len(l)' \
-        "if 's' in _: l.append(_)" --debug
-
-    # instead of 'print', you may use the included out(obj) (alias of print) 
-    # and err(obj) functions for outputting to respectively stdout and stderr.
-    # if you prefer, these functions are also aliased as stdout(obj) and
-    # stderr(obj)
-    $ ls / | pype "if 's' in _ { out(_) } else { err(_) }" > stdout 2>stderr
+```shell
+$ seq 1 5 | pype 'n = int(_); if n%2==0 { print "{0}*{0}={1}".format(n, n*n) }'
+2*2=4
+4*4=16
 
 Install
 -------
 
-`pype` is a very short, hacky little script. It has very few dependencies,
-which are all available in python 2.6, so hopefully, you can just download
-it and run it as-is!
+`pype` is a very short, hacky little script (and is defintely not suitable for production
+environments at this point). It has very few dependencies, which are all available in 
+python 2.6, so hopefully, you can just download it and run it as-is!
 
-It's recommended to alias pype (alias pype='python PATH_TO/pype.py'), but you
-may just as well just use 'python pype.py'.
-
-Here's three different ways to install pype:
+It's recommended to alias pype, i.e. `alias pype='python PATH_TO/pype.py`, but you
+can just as well use `python pype.py 'my code`.
 
 **Install with pip**
 
@@ -66,18 +40,102 @@ Here's three different ways to install pype:
 
 **Manual Install**
 
-Download pype to somewhere suitable:
+Copy & paste-installer for the brave. Modify `PYPE_INSTALL_PATH` and `PYPE_RC_FILE` as required:
 
-    mkdir ~/pype
-    touch ~/.pype
-    wget -O ~/pype/pype.py "https://github.com/pype/pype.py"
+```shell
+PYPE_INSTALL_PATH="$HOME/bin" && \
+PYPE_RC_FILE="$HOME/.bashrc" && \
+mkdir -p "$PYPE_INSTALL_PATH" && \
+wget -O "$PYPE_INSTALL_PATH/pype.py" "https://raw.githubusercontent.com/ircflagship2/pype/master/pype.py" && \
+echo "alias pype=\"python $PYPE_INSTALL_PATH/pype.py\"" >> $PYPE_RC_FILE && \
+source $PYPE_RC_FILE
+```
 
-Add an alias to `.profile`, `.bashrc` or an equivalent user environment file
+Advanced Functionality and More Examples
+----------------------------------------
 
-	echo 'alias pype="python ~/pype/pype.py"' >> .profile
+List all files/folders in root in uppercase:
 
-Other details
+```shell
+$ ls / | pype 'print _.upper()'
+```
+
+Do the same, without an alias:
+
+```shell
+$ ls / | python ~/bin/pype.py 'print _.upper()'
+```
+
+Print files/folders containing the character 's' in uppercase, the rest in lowercase:
+
+```shell
+$ ls / | pype "if 's' in _ { print _.upper() } else { print _.lower() }"
+```
+
+Do something cummulative using `--before` and `--after`. let's count all
+folders/files containing an *s*
+
+```shell
+$ ls / | pype --before "l = []" --after 'print len(l)' "if 's' in _: l.append(_)"
+```
+
+While `pype` auto-imports a handful of often-used imports, the `--before` argument is 
+useful if you need to include additional libraries:
+
+```shell
+$ ls / | pype --before "import json" "print json.dumps( { 'stdin' : _, 'upper' : _.upper() } )"
+
+Print the properly indented source code executed, together with verbose input
+and output information using the `--debug` flag. also useful to get an idea
+of how pype works
+
+```shell
+$ ls / | pype --before "l = []" --after 'print len(l)' "if 's' in _: l.append(_)" --debug
+```
+
+Instead of using `print`, you may use the included `out(obj)` (alias of `print`) 
+and `err(obj)` functions for outputting to respectively `stdout` and `stderr`.
+If you prefer, these functions are also aliased as `stdout(obj)` and `stderr(obj)`.
+
+```shell
+$ ls / | pype "if 's' in _ { out(_) } else { err(_) }" >stdout.log 2>stderr.log
+```
+
+Pype trims `_` using `str.rstrip` by default. This is generally easier to work with, as `print`,
+`out()` and `err()` will add a newline character to output. You can disable this 
+behaviour if you need the stdin input unmodified. You'll likely want to use 
+`sys.stdout.write()` and `sys.stderr.write()` instead of `print`, `out` and `err`, as the 
+`sys` methods do not add an extra newline.
+
+```shell
+$ ls / | pype --no-trim "sys.stdout.write( _.upper() )"
+```
+
+Code reuse and defaults
 -------------
 
-Regularily used imports or functions can be added to ~/.pype . This is a
-regular python file that will be included in all pype scripts.
+Regularily used imports or functions can be added to `~/.pype` . This is a
+regular python file that will be included in all pype scripts. So adding the below
+to `~/.pype` will allow you to run e.g. `ls / | pype 'printtwice( math.sqrt( int(_) ) )':
+
+```python
+# ~/.pype
+
+import math
+
+def printtwice(out):
+	print out
+	print out
+```
+
+Issues
+------
+
+Issues and pull requests are gladly accepted. The biggest known problem is that the conversion
+between curly-braced and tabular-indented python is entirely untested, and likely to fail for
+anything more complex than very simple oneliners, like the ones in these examples.
+
+Contributors
+------------
+
+- [Jens Kristian Geyti](http://www.github.com/jkgeyti)
