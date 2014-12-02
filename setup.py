@@ -1,13 +1,13 @@
 from distutils.core import setup
 setup(
-  name = 'pype',
-  packages = ['pype'], # this must be the same as the name above
+  name = 'pypecli',
+  packages = ['pypecli'], # this must be the same as the name above
   version = '1.0.0',
-  description = 'Python for Command Line Oneliners',
+  description = 'Pype: Python for Command Line Oneliners',
   author = 'Jens Kristian Geyti',
-  author_email = 'python@jkg.dk',
+  author_email = 'pype@jkg.dk',
   url = 'https://github.com/ircflagship2/pype',
-  download_url = 'https://github.com/ircflagship2/pype/tarball/1.0.0',
+  download_url = 'https://github.com/ircflagship2/pype/tarball/1.0.1',
   keywords = ['commandline', 'terminal', 'scripting', 'linux', 'sysadm'],
   classifiers = [],
 )

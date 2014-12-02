@@ -34,12 +34,12 @@ environments at this point). It has very few dependencies, which are all availab
 python 2.6, so hopefully, you can just download it and run it as-is!
 
 It's recommended to alias pype, i.e. `alias pype='python PATH_TO/pype.py`, but you
-can just as well use `python pype.py 'my code`.
+can just as well use `python pype.py 'my code'`.
 
 **Install with pip**
 
 ```
-pip install pype-cli
+pip install pypecli
 ```
 
 **Manual Install**
@@ -58,7 +58,7 @@ source $PYPE_RC_FILE
 Advanced Functionality and More Examples
 ----------------------------------------
 
-List all files/folders in root in uppercase:
+List all files/folders in `/` in uppercase:
 
 ```shell
 $ ls / | pype 'print _.upper()'
@@ -70,13 +70,13 @@ Do the same, without an alias:
 $ ls / | python ~/bin/pype.py 'print _.upper()'
 ```
 
-Print files/folders containing the character 's' in uppercase, the rest in lowercase:
+Print files/folders containing the character *s* in uppercase, the rest in lowercase:
 
 ```shell
 $ ls / | pype "if 's' in _ { print _.upper() } else { print _.lower() }"
 ```
 
-Do something cummulative using `--before` and `--after`. let's count all
+Do something cummulative using `--before` and `--after`. Let's count all
 folders/files containing an *s*
 
 ```shell
@@ -91,8 +91,8 @@ $ ls / | pype --before "import json" "print json.dumps( { 'stdin' : _, 'upper' :
 ```
 
 Print the properly indented source code executed, together with verbose input
-and output information using the `--debug` flag. also useful to get an idea
-of how pype works
+and output information using the `--debug` flag. Also useful to get an idea
+of how pype works:
 
 ```shell
 $ ls / | pype --before "l = []" --after 'print len(l)' "if 's' in _: l.append(_)" --debug
@@ -106,7 +106,7 @@ If you prefer, these functions are also aliased as `stdout(obj)` and `stderr(obj
 $ ls / | pype "if 's' in _ { out(_) } else { err(_) }" >stdout.log 2>stderr.log
 ```
 
-Pype trims `_` using `str.rstrip` by default. This is generally easier to work with, as `print`,
+`pype` trims `_` using `str.rstrip` by default. This is generally easier to work with, as `print`,
 `out()` and `err()` will add a newline character to output. You can disable this 
 behaviour if you need the stdin input unmodified. You'll likely want to use 
 `sys.stdout.write()` and `sys.stderr.write()` instead of `print`, `out` and `err`, as the 
@@ -120,8 +120,9 @@ Code reuse and defaults
 -------------
 
 Regularily used imports or functions can be added to `~/.pype` . This is a
-regular python file that will be included in all pype scripts. So adding the below
-to `~/.pype` will allow you to run e.g. `ls / | pype 'printtwice( math.sqrt( int(_) ) )':
+regular python file that will be included in all pype scripts. For instance, adding the 
+content below to `~/.pype` will allow you to run 
+`ls / | pype 'printtwice( math.sqrt( int(_) ) )` without errors:
 
 ```python
 # ~/.pype
