@@ -1,7 +1,7 @@
 pype
 ====
 
-*Curly brackets indented python for command line oneliners:*
+*Curly bracket-indented python for command line oneliners:*
 
 ```shell
  ./somecommand | pype "if _.startswith('py') { print _ }" | ./anothercommand
@@ -33,8 +33,8 @@ Install
 environments at this point). It has very few dependencies, which are all available in 
 python 2.6, so hopefully, you can just download it and run it as-is!
 
-It's recommended to alias pype, i.e. `alias pype='python PATH_TO/pype.py`, but you
-can just as well use `python pype.py 'my code'`.
+It's recommended to alias pype, i.e. `alias pype='python PATH_TO/pype`, but you
+can just as well use `python pype 'my code'`.
 
 **Install with pip**
 
@@ -50,8 +50,8 @@ Copy & paste-installer for the brave. Modify `PYPE_INSTALL_PATH` and `PYPE_RC_FI
 PYPE_INSTALL_PATH="$HOME/bin" && \
 PYPE_RC_FILE="$HOME/.bashrc" && \
 mkdir -p "$PYPE_INSTALL_PATH" && \
-wget -O "$PYPE_INSTALL_PATH/pype.py" "https://raw.githubusercontent.com/ircflagship2/pype/master/pype.py" && \
-echo "alias pype=\"python $PYPE_INSTALL_PATH/pype.py\"" >> $PYPE_RC_FILE && \
+wget -O "$PYPE_INSTALL_PATH/pype" "https://raw.githubusercontent.com/ircflagship2/pype/master/pype" && \
+echo "alias pype=\"python $PYPE_INSTALL_PATH/pype\"" >> $PYPE_RC_FILE && \
 source $PYPE_RC_FILE
 ```
 
@@ -125,8 +125,6 @@ content below to `~/.pype` will allow you to run
 `ls / | pype 'printtwice( math.sqrt( int(_) ) )` without errors:
 
 ```python
-# ~/.pype
-
 import math
 
 def printtwice(out):
