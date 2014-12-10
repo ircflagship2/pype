@@ -38,13 +38,21 @@ can just as well use `python pype 'my code'`.
 
 **Install with pip**
 
-```
+```shell
 pip install pypecli
+```
+
+**Install with git and setup.py**
+
+```shell
+git clone https://github.com/ircflagship2/pype.git
+cd pype
+python setup.py install
 ```
 
 **Manual Install**
 
-Copy & paste-installer for the brave. Modify `PYPE_INSTALL_PATH` and `PYPE_RC_FILE` as required:
+Copy & paste-installer for the brave. This is useful for boxes where you've only got user rights. Modify `PYPE_INSTALL_PATH` and `PYPE_RC_FILE` as required:
 
 ```shell
 PYPE_INSTALL_PATH="$HOME/bin" && \
