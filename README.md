@@ -5,7 +5,7 @@ pype
 
 Runs everywhere. Only 1 file, and works on python 2.3 - 3.4.
 
-<p style="text-align:center"><img src="https://raw.githubusercontent.com/ircflagship2/pype/githubresources/terminal-animation.gif" align="left" width="580" ></img></p>
+![Pype Usage in Terminal](https://raw.githubusercontent.com/ircflagship2/pype/githubresources/terminal-animation.gif)
 
 About
 -----
