@@ -3,7 +3,9 @@ pype
 
 *Curly bracket-indented python for command line oneliners.*
 
-Runs everywhere. Only 1 file, and tested on python 2.3 - 3.4.
+Runs everywhere. Only 1 file, and works on python 2.3 - 3.4.
+
+<div style="text-align:center"><img src="https://raw.githubusercontent.com/ircflagship2/pype/githubresources/terminal-animation.gif" align="left" width="580" ></a></div>
 
 About
 -----
