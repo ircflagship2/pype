@@ -1,7 +1,7 @@
 from distutils.core import setup
 setup(
   name = 'pypecli',
-  version = '1.1.0',
+  version = '1.1.1',
   description = 'Curly bracket-indented Python for command line oneliners',
   author = 'Jens Kristian Geyti',
   author_email = 'pype@jkg.dk',
