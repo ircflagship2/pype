@@ -3,7 +3,7 @@ pype
 
 *Curly bracket-indented python for command line oneliners.*
 
-Runs everywhere. Only 1 file, and works on python 2.3 - 3.4.
+Runs everywhere python runs - even on Windows! Only 1 file, and works on python 2.3 - 3.4.
 
 ![Pype Usage in Terminal](https://raw.githubusercontent.com/ircflagship2/pype/githubresources/terminal-animation.gif)
 
@@ -50,6 +50,14 @@ mkdir -p "$PYPE_INSTALL_PATH" && \
 wget -O "$PYPE_INSTALL_PATH/pype" "https://raw.githubusercontent.com/ircflagship2/pype/master/pype" && \
 echo "alias pype=\"python $PYPE_INSTALL_PATH/pype\"" >> $PYPE_RC_FILE && \
 source $PYPE_RC_FILE
+```
+
+#### Install on Windows
+
+Due to a known bug, it's not recommended to use `python setup.py install` on Windows. Download the `pype` file, rename it `pype.py` and add it to somewhere on your `PATH`. Then call it using `pype.py` instead of `pype`, e.g.:
+
+```shell
+c:\>dir | pype.py --collect "_.sort(); for l in _: print l"
 ```
 
 Advanced Functionality and More Examples
