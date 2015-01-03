@@ -1,11 +1,9 @@
 pype
 ====
 
-*Curly bracket-indented python for command line oneliners:*
+*Curly bracket-indented python for command line oneliners.*
 
-```shell
- ./somecommand | pype "if _.startswith('py') { print _ }" | ./anothercommand
-```
+Runs everywhere. Only 1 file, and tested on python 2.3 - 3.4.
 
 About
 -----
@@ -18,12 +16,12 @@ HELLO WORLD
 ```
 
 To make it easier to write one-liners, `pype` allows you to use curly brackets for indentation. 
-Let's calculate the square of the even numbers between 1 and 5:
+Additionally, pype will by default convert input to ints and floats if applicable. Let's calculate the square of the even numbers between 1 and 5:
 
 ```shell
-$ seq 1 5 | pype 'n = int(_); if n%2==0 { print "{0}*{0}={1}".format(n, n*n) }'
-2*2=4
-4*4=16
+$ seq 1 5 | pype 'if _%2 == 0 { print _*_ }'
+4
+16
 ```
 
 Install
@@ -33,16 +31,13 @@ Install
 environments at this point). It has very few dependencies, which are all available in 
 python 2.6, so hopefully, you can just download it and run it as-is!
 
-It's recommended to alias pype, i.e. `alias pype='python PATH_TO/pype`, but you
-can just as well use `python pype 'my code'`.
-
-**Install with pip**
+#### Install with pip
 
 ```
 pip install pypecli
 ```
 
-**Manual Install**
+#### Manual Install
 
 Copy & paste-installer for the brave. Modify `PYPE_INSTALL_PATH` and `PYPE_RC_FILE` as required:
 
@@ -58,23 +53,29 @@ source $PYPE_RC_FILE
 Advanced Functionality and More Examples
 ----------------------------------------
 
+#### Calling pype
+
 List all files/folders in `/` in uppercase:
 
 ```shell
 $ ls / | pype 'print _.upper()'
 ```
 
-Do the same, without an alias:
+Pype is just a single python file, so you can the same by just pointing to the pype python file:
 
 ```shell
-$ ls / | python ~/bin/pype.py 'print _.upper()'
+$ ls / | python ~/my_scripts/pype 'print _.upper()'
 ```
+
+#### If...else statements
 
 Print files/folders containing the character *s* in uppercase, the rest in lowercase:
 
 ```shell
 $ ls / | pype "if 's' in _ { print _.upper() } else { print _.lower() }"
 ```
+
+#### --before and --after
 
 Do something cummulative using `--before` and `--after`. Let's count all
 folders/files containing an *s*
@@ -90,6 +91,24 @@ useful if you need to include additional libraries:
 $ ls / | pype --before "import json" "print json.dumps( { 'stdin' : _, 'upper' : _.upper() } )"
 ```
 
+#### --collect
+
+When doing something cummulative, it's often easier to use the `--collect` flag, to collect all input into an array (stored as `_`). Let's calculate the average of an input list of numbers:
+
+```shell
+$ seq 10 21 | pype -c "print sum(_) / float(len(_))"
+```
+
+#### --except
+
+By default, pype will print a bunch of debug information to `stderr` when an unhandled exception is raised. You can define a custom, global exception handler with the `--exception` option. The exception is available as the variable `e`:
+
+```shell
+$ ls / | pype --exception "print e" "_ + 1"
+```
+
+#### --debug
+
 Print the properly indented source code executed, together with verbose input
 and output information using the `--debug` flag. Also useful to get an idea
 of how pype works:
@@ -98,13 +117,15 @@ of how pype works:
 $ ls / | pype --before "l = []" --after 'print len(l)' "if 's' in _: l.append(_)" --debug
 ```
 
-Instead of using `print`, you may use the included `out(obj)` (alias of `print`) 
-and `err(obj)` functions for outputting to respectively `stdout` and `stderr`.
-If you prefer, these functions are also aliased as `stdout(obj)` and `stderr(obj)`.
+#### --no-convert
+
+To make life easier, `pype` will convert input to integers and floats if possible. You can disable this behaviour, and ensure all input is strings by setting the --no-convert flag:
 
 ```shell
-$ ls / | pype "if 's' in _ { out(_) } else { err(_) }" >stdout.log 2>stderr.log
+echo "1\n2.2\ntest" | pype -c --no-convert "print _"
 ```
+
+#### --no-trim
 
 `pype` trims `_` using `str.rstrip` by default. This is generally easier to work with, as `print`,
 `out()` and `err()` will add a newline character to output. You can disable this 
@@ -116,13 +137,24 @@ behaviour if you need the stdin input unmodified. You'll likely want to use
 $ ls / | pype --no-trim "sys.stdout.write( _.upper() )"
 ```
 
+
+#### Outputting to stdout and stderr
+
+Instead of using `print`, you may use the included `out(obj)` (alias of `print`) 
+and `err(obj)` functions for outputting to respectively `stdout` and `stderr`.
+If you prefer, these functions are also aliased as `stdout(obj)` and `stderr(obj)`.
+
+```shell
+$ ls / | pype "if 's' in _ { out(_) } else { err(_) }" >stdout.log 2>stderr.log
+```
+
 Code reuse and defaults
 -------------
 
 Regularily used imports or functions can be added to `~/.pype` . This is a
 regular python file that will be included in all pype scripts. For instance, adding the 
 content below to `~/.pype` will allow you to run 
-`ls / | pype 'printtwice( math.sqrt( int(_) ) )` without errors:
+`seq 1 5 | pype 'printtwice( math.sqrt( _ ) )` without errors:
 
 ```python
 import math
@@ -136,7 +168,7 @@ Issues
 ------
 
 Issues and pull requests are gladly accepted. The biggest known problem is that the conversion
-between curly-bracketed and tabular-indented python is entirely untested, and likely to fail for
+between curly-bracketed and whitespace-indented python is entirely untested, and likely to fail for
 anything more complex than very simple oneliners, like the ones in these examples.
 
 Contributors
