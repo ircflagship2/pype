@@ -114,7 +114,8 @@ $ seq 10 21 | pype -c "print sum(_) / float(len(_))"
 By default, pype will print a bunch of debug information to `stderr` when an unhandled exception is raised. You can define a custom, global exception handler with the `--exception` option. The exception is available as the variable `e`:
 
 ```shell
-$ ls / | pype --exception "print e" "_ + 1"
+$ ls / | pype --except "err(e)" "_ + 1" # print error messages to stderr
+$ ls / | pype --except pass "_ + 1" # quit silently on errors
 ```
 
 #### --debug
